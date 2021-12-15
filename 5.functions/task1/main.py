@@ -82,42 +82,52 @@ def del_documents(directories):
   return result
 
 def move_documents(directories):
+  dir_del = None
+  dir_add = None
   in_doc = input('Введите номер документа: ')
   in_dir = input('Введите номер полки: ')
+
   for dir, doc in directories.items():
     if in_doc in doc:
-      print(dir)
-      for dir, doc in directories.items():
-        if in_dir in dir:
-          print(doc)
-          result = ("OK")
-          return result  
-      result = ("Ошибка")
-      return result   
-    else:
-      result = ("Dir error")
-      return result 
-  
+      dir_del = dir
+
+  for dir, doc in directories.items():
+    if in_dir in dir:
+      dir_add = dir
+
+  if dir_del is None:
+    result = ("Документ не найден")
+    return result
+  elif dir_add is None:
+      result = ("Полка не найдена")
+      return result
+  else:
+    del(directories[dir_del][directories[dir_del].index(in_doc)])
+    directories[in_dir].append(in_doc)
+    result = ("Документ перемещён")
+    return result
 
 
-print(move_documents(directories))
+# print(move_documents(directories))
 
-# def main():
-#   while True:
-#     user_input = input('Введите команду ("h" для справки): ')
-#     if user_input == "p":
-#       print(get_people(documents))
-#     elif user_input == "s":
-#       print(get_directories(directories))
-#     elif user_input == "l":
-#       print(get_documents(documents))
-#     elif user_input == "a":
-#       print(add_documents(directories))
-#     elif user_input == "d":
-#       print(del_documents(directories))
-#     elif user_input == "h":
-#       print("h- help - справка.\np – people – команда, которая спросит номер документа и выведет имя человека, которому он принадлежит;\ns – shelf – команда, которая спросит номер документа и выведет номер полки, на которой он находится;\nl– list – команда, которая выведет список всех документов;\na – add – команда, которая добавит новый документ в каталог и в перечень полок.\nd – delete – команда, которая спросит номер документа и удалит его из каталога и из перечня полок.\nq - выход.")
-#     elif user_input == "q":
-#       break
+def main():
+  while True:
+    user_input = input('Введите команду ("h" для справки): ')
+    if user_input == "p":
+      print(get_people(documents))
+    elif user_input == "s":
+      print(get_directories(directories))
+    elif user_input == "l":
+      print(get_documents(documents))
+    elif user_input == "a":
+      print(add_documents(directories))
+    elif user_input == "d":
+      print(del_documents(directories))
+    elif user_input == "m":
+      print(move_documents(directories))
+    elif user_input == "h":
+      print("h- help - справка.\np – people – команда, которая спросит номер документа и выведет имя человека, которому он принадлежит;\ns – shelf – команда, которая спросит номер документа и выведет номер полки, на которой он находится;\nl– list – команда, которая выведет список всех документов;\na – add – команда, которая добавит новый документ в каталог и в перечень полок.\nd – delete – команда, которая спросит номер документа и удалит его из каталога и из перечня полок.\nm – move – команда, которая спросит номер документа и целевую полку и переместит его с текущей полки на целевую.\nq - выход.")
+    elif user_input == "q":
+      break
 
-# main()
+main()
